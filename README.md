@@ -5,7 +5,7 @@ You are going to develop a film presentation and review website. The goal is to 
 ## Restriction
 For the movie informations, use the Movie Database API:
 
-<a href="(https://developer.themoviedb.org/docs/getting-started)" target="_blank">API</a>
+<a href="https://developer.themoviedb.org/docs/getting-started" {:target="_blank"}>API</a>
 ## Site example
 <a href="https://www.rottentomatoes.com/" target="_blank">Rotten Tomatoes</a>
 
