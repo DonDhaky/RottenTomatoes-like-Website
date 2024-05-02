@@ -7,7 +7,7 @@ For the movie informations, use the Movie Database API:
 
 https://developer.themoviedb.org/docs/getting-started
 ## Site example
-https://www.rottentomatoes.com/
+<a href="https://www.rottentomatoes.com/" target="_blank">Rotten Tomatoes</a>
 
 ## User Functionnalities
 ### When not connected:
