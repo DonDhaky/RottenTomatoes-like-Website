@@ -1,6 +1,31 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-export default function Register() {
+const Register = () => {
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  const handleRegister = async () => { // ajouter "event" pour test
+    // event.preventDefault(); // test
+
+    const response = await fetch("/api/auth/register", { // ATTENTION A LA ROUTE
+      method: "POST",
+      body: JSON.stringify({ email, username, password }),
+    });
+
+    if (response.ok) {
+      alert("You have successfully registered ! You can now connect !");
+      router.push("/login"); 
+    } else {
+      const error = await response.json();
+      alert(error.error);
+    }
+  };
 
   return (
     <div>
@@ -30,9 +55,9 @@ export default function Register() {
             >
               <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M1 1h15M1 7h15M1 13h15"
               />
             </svg>
@@ -99,7 +124,9 @@ export default function Register() {
                   type="text"
                   id="username"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Your username"
+                  placeholder="Type your username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   required
                 />
               </div>
@@ -114,7 +141,9 @@ export default function Register() {
                   type="email"
                   id="email"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Your email"
+                  placeholder="Type your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -129,14 +158,17 @@ export default function Register() {
                   type="password"
                   id="password"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Your password"
+                  placeholder="Type your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
               <button
                 type="submit"
                 className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
+                onClick={handleRegister}
+                >
                 Register
               </button>
             </form>
@@ -146,3 +178,5 @@ export default function Register() {
     </div>
   );
 }
+
+export default Register;

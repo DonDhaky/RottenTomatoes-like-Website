@@ -9,8 +9,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const handleRegister = async () => {
-    const response = await fetch("/api/auth/register", { // ATTENTION A LA ROUTE
+  const handleLogin = async () => {
+    const response = await fetch("/api/auth/[...nextauth]", { // ATTENTION A LA ROUTE
       method: "POST",
       body: JSON.stringify({ email, username, password }),
     });
@@ -44,7 +44,7 @@ const Login = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       /><br></br>
-      <button onClick={handleRegister}>Login</button>
+      <button onClick={handleLogin}>Login</button>
     </div>
   );
 };
