@@ -1,12 +1,16 @@
 import 'tailwindcss/tailwind.css';
 import Link from "next/link";
 import fetchFilms from "@/app/api/auth/films/server";
+import { useState } from 'react';
+
 
 interface Film {
   id: number;
   title: string;
   overview: string;
   poster_path: string;
+  genre_ids: number[];
+  release_date: string;
 }
 
 interface HomeProps {
@@ -23,6 +27,61 @@ export async function getStaticProps() {
 }
 
 export default function Home({ films }: HomeProps) {
+
+  const [selectedGenre, setSelectedGenre] = useState<number[]>([]);
+  const [selectedDate, setSelectedDate] = useState<string>("");
+  const [selectedDirector, setSelectedDirector] = useState<string>("");
+  const [filteredResults, setFilteredResults] = useState<Film[]>(films);
+
+  const handleGenreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedGenres = Array.from(
+      event.target.selectedOptions,
+      (option) => option.value
+    ).map(Number);
+    setSelectedGenre(selectedGenres);
+  };
+
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedDate = new Date(event.target.value);
+    const selectedMonth = selectedDate.getMonth() + 1; // Months are 0-based in JavaScript
+    const selectedYear = selectedDate.getFullYear();
+    setSelectedDate(`${selectedYear}-${selectedMonth.toString().padStart(2, "0")}`);
+  };
+
+  // const handleDirectorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSelectedDirector(event.target.value);
+  // };
+
+  const filterFilms = () => {
+    let results = films;
+    if (selectedGenre.length > 0) {
+      results = results.filter((film) =>
+        film.genre_ids.some((id) => selectedGenre.includes(id))
+      );
+    }
+    if (selectedDate) {
+      const [selectedYear, selectedMonth] = selectedDate.split("-");
+      results = results.filter(
+        (film) => film.release_date.startsWith(`${selectedYear}-${selectedMonth}`)
+      );
+    }
+    if (selectedDirector) {
+      // TODO: Implement director filtering
+    }
+    setFilteredResults(results);
+  };
+
+  const resetFilters = () => {
+    setSelectedGenre([]);
+    setSelectedDate("");
+    setSelectedDirector("");
+    setFilteredResults(films);
+  };
+
+  const handleFilterClick = () => {
+    filterFilms();
+  };
+
   return (
     <div>
       {/* Display the NavBar Section */}
@@ -108,7 +167,7 @@ export default function Home({ films }: HomeProps) {
         <div className="mb-6 flex justify-center">
           <h2 className="text-2xl font-semibold">Filter Movies</h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
           <div>
             <label
               htmlFor="genre"
@@ -119,29 +178,46 @@ export default function Home({ films }: HomeProps) {
             <select
               id="genre"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-100 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              multiple={true}
+              onChange={handleGenreChange}
             >
               <option value="">All</option>
-              <option value="action">Action</option>
-              <option value="comedy">Comedy</option>
-              <option value="drama">Drama</option>
-              <option value="horror">Horror</option>
-              <option value="scifi">Sci-Fi</option>
+              <option value="28">Action</option>
+              <option value="12">Adventure</option>
+              <option value="16">Animation</option>
+              <option value="35">Comedy</option>
+              <option value="80">Crime</option>
+              <option value="99">Documentary</option>
+              <option value="18">Drama</option>
+              <option value="10751">Family</option>
+              <option value="14">Fantasy</option>
+              <option value="36">History</option>
+              <option value="27">Horror</option>
+              <option value="10402">Music</option>
+              <option value="9648">Mystery</option>
+              <option value="10749">Romance</option>
+              <option value="878">Science Fiction</option>
+              <option value="10770">TV Movie</option>
+              <option value="53">Thriller</option>
+              <option value="10752">War</option>
+              <option value="37">Western</option>
             </select>
           </div>
-          <div>
+          <div className='mt-auto flex-col items-center'>
             <label
               htmlFor="date"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900"
             >
-              Release Date
+              Release Month
             </label>
             <input
-              type="date"
+              type="month"
               id="date"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-100 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 h-10"
+              onChange={handleDateChange}
             />
           </div>
-          <div>
+          {/* <div className='mt-auto flex-col items-center'>
             <label
               htmlFor="director"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900"
@@ -153,14 +229,24 @@ export default function Home({ films }: HomeProps) {
               id="director"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-100 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 h-10"
               placeholder="Director name"
+              onChange={handleDirectorChange}
             />
-          </div>
-          <div className="mt-auto flex justify-center">
+          </div> */}
+          <div className="mt-auto flex justify-evenly">
             <button
               type="button"
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 h-10"
+              onClick={handleFilterClick}
             >
               Apply Filter
+            </button>
+            <button
+              type="button"
+              className='text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800 h-10'
+              onClick={resetFilters}
+            >
+              Reset Filter
+
             </button>
           </div>
         </div>
@@ -171,7 +257,7 @@ export default function Home({ films }: HomeProps) {
           <h2 className="text-2xl font-semibold">Movies</h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
-          {films.map((film) => (
+          {filteredResults.map((film) => (
             <div
               key={film.id}
               className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
@@ -192,6 +278,9 @@ export default function Home({ films }: HomeProps) {
                 <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                   {film.overview}
                 </p>
+                <h6 className="mb-3 text-1xl font-bold tracking-widest text-gray-700 dark:text-gray-100 ">
+                  {film.release_date}
+                </h6>
                 <a
                   href="#"
                   className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
