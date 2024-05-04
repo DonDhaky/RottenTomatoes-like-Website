@@ -1,43 +1,23 @@
 "use client";
 // A MODIFIEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEER
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import 'tailwindcss/tailwind.css';
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const router = useRouter();
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-  
-    console.log('Email :', email); // Vérif si l'email est bien défini
-    console.log('Password :', password); // Vérif si le mot de passe est bien défini
-  
-    try {
-      const result = await signIn('Credentials', {
-        redirect: false,
-        email,
-        password,
-      }); // méthode à employer lorsqu'on utilise NextAuth
-  
-      console.log('result =', result); // test de "result"
-  
-      if (result && result.ok) {
-        alert('You are connected on the site !');
-        router.push('/');
-      } else {
-        const error = result ? result.error : 'Error after push router !';
-        alert('Error while trying to log in : ' + error);
-        router.push('/login');
-      }
-    } catch (error) {
-      console.error('Erreur lors de la connexion :', error);
-      alert('An error has occured while trying to log in !');
-    }
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await signIn('credentials', {
+      email,
+      password,
+      callbackUrl: '/',
+    });
   };
 
     return (
@@ -125,7 +105,7 @@ const Login = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             <div className="col-span-full">
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleLogin}>
                 <div>
                   <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">
                     Email
