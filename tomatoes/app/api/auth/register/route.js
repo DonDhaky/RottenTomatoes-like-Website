@@ -4,6 +4,17 @@ import bcrypt from "bcrypt";
 
 export const POST = async (req) => {
   try {
+    // const bodyText = await req.text(); // test
+    // console.log("Corps reçu:", bodyText); // test
+
+    // if (!bodyText) { // test
+    //   return NextResponse.json( // test
+    //     { error: "Corps de requête manquant." }, // test
+    //     { status: 400 } // test
+    //   ); // test
+    // } // test
+
+    // const body = JSON.parse(bodyText); // test
     const body = await req.json();
     const { email, username, password } = body;
 
