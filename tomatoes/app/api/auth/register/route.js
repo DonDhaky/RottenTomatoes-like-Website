@@ -15,7 +15,7 @@ export const POST = async (req) => {
     // } // test
 
     // const body = JSON.parse(bodyText); // test
-    const body = await req.json(); // commenté pour le test
+    const body = await req.json();
     const { email, username, password } = body;
 
     if (!email || !username || !password) {

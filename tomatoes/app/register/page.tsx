@@ -10,8 +10,8 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const handleRegister = async () => { // ajouter "event" pour test
-    // event.preventDefault(); // test
+  const handleRegister = async (event) => {
+    event.preventDefault();
 
     const response = await fetch("/api/auth/register", { // ATTENTION A LA ROUTE
       method: "POST",
