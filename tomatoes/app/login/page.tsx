@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signIn, useSession } from 'next-auth/react';
+import 'tailwindcss/tailwind.css';
 
 const Login = () => {
   const [email, setEmail] = useState("");
