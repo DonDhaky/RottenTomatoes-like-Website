@@ -1,9 +1,14 @@
 import { query } from './mysql';
 import bcrypt from 'bcrypt';
 
-const saltRounds = 10;
-
 const MySQLAdapter = {
+
+
+  async getAllUsers() {
+    const result = await query('SELECT * FROM users');
+    return result;
+  },
+
   async getUser(id) {
     const result = await query('SELECT * FROM users WHERE id = ?', [id]);
     return result.length ? result[0] : null;

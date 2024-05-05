@@ -1,6 +1,6 @@
 import 'tailwindcss/tailwind.css';
 import Link from "next/link";
-import fetchFilms from "@/app/api/auth/films/server";
+import fetchFilms from "@/app/api/films/server";
 import { useState } from 'react';
 
 
