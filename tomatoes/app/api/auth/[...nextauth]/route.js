@@ -18,6 +18,7 @@ export const authHandler = {
         if (user) {
           const isPasswordCorrect = await bcrypt.compare(credentials.password, user.password);
           if (isPasswordCorrect) {
+            console.log('Dans le authorize, user de la DB : ', user.id);
             return user;
           }
         }
@@ -27,6 +28,20 @@ export const authHandler = {
   ],
   session: {
     strategy: 'jwt', // Utilisation des tokens JWT pour la session
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;  // Stockage de l'id de l'utilisateur dans le token JWT
+        console.log('Dans le callback jwt, user.id et token.id : ', user.id, token.id);
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.id = token.id; // Stockage de l'id de l'utilisateur via le token.id dans la session
+       console.log('Dans le callback session, token.id et session.user.id : ', token.id, session.user.id);
+      return session;
+    },
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
