@@ -1,27 +1,29 @@
 # Rotten Tomatoes
 
 ## Description
-You are going to develop a film presentation and review website. The goal is to offer a part for users to see new films with descriptions, notes and the review of the public. The second part will be for the administrator of the site. So that he would have a visual on the reviews and opinions given to the films, he will also have the possibility to add new films.
+Il s'agit d'un projet de création d'un site web reproduisant le concept du site Rotten Tomatoes. L'objectif était de créer un site où un utilisateur pouvait chercher des films via l'API The DB Movies, ajouter des films en favoris et leur attribuer une note.
+Le site devait contenir une interface administrateur.
+
 ## Restriction
-For the movie informations, use the Movie Database API:
+Nous devions utiliser l'API The DB Movies:
 
 <a href="https://developer.themoviedb.org/docs/getting-started">API</a>
-## Site example
+
+## Le site modèle
 <a href="https://www.rottentomatoes.com/" target="_blank">Rotten Tomatoes</a>
 
-## User Functionnalities
-### When not connected:
-* To be able to see the different films
-* Register and connect
-### When connected:
-* Change his email and password
-* Add movies to a favorite list
-* Grade the movies
-* Write comments under each movie
-* Filter movies by genre/date/director
-## Admin Functionnalities
-* Create/Update/Delete an account
-* Create/Update/Delete a film
-* Switching a user account to administrator
-* To be able to see some detailed statistics of films scores
-* Use The Movie Database API to add new films
+## Fonctionnalités utilisateur
+### Quand il est déconnecté :
+* Voir les différents films
+* S'enregistrer et se connecter
+### Quand il est connecté :
+* Changer son email et password
+* Ajouter des filmes dans une liste de favoris 
+* Noter les films
+* Ajouter des commentaires au films
+* Filtrer les recherches de films par genre/date
+## Fonctionnalités administrateur
+* Créer/mettre à jour/supprimer un compte
+* Définir un utilisateur en tant qu'administrateur
+* Voir les stats détaillés d'un film
+* Exploiter l'API pour ajouter des films à afficher
